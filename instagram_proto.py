@@ -9,13 +9,11 @@ def check_instagram(url):
 
 
 def transform(url):
-    if os.name =='posix':
-        delimeter = '\\'
-    elif os.name == 'nt':
-        delimeter = '/'
     if url[-1] != '/':
         url += '/'
-    return url + 'media/?size=l', "images{0}".format(delimeter) + url.split('/')[-2] + '.jpg'
+    file_name = url.split('/')[-2] + '.jpg'
+    location_name = os.path.join("images", file_name)
+    return url + 'media/?size=l', location_name
 
 
 def download_file(url, file_name):

@@ -123,6 +123,16 @@ class Telegram:
         data = {'chat_id': chat_id}
         files = {'photo': (imagePath, open(imagePath, "rb"))}
         requests.post(self.URL + self.TOKEN + '/sendPhoto', data=data, files=files)
+        if not self.proxy:
+            request = requests.post(self.URL + self.TOKEN + '/sendPhoto', data=data, files=files)  # HTTP request
+
+        else:
+            request = requests.post(self.URL + self.TOKEN + '/sendPhoto', data=data, files=files,
+                                    proxies=self.proxies)  # HTTP request with proxy)                                    
+
+        if not request.status_code == 200:  # Check server status
+            return False
+        return request.json()['ok']  # Check API
 
     def send_text(self, chat_id, text):
         try:
