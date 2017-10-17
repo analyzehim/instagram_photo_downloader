@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import sys
-
+import os
 from bot_proto import *
 from instagram_proto import *
 
@@ -23,15 +23,17 @@ def run_command(name, from_id, cmd, author_id, date):
     if cmd == '/help':
         telebot.send_text(from_id, 'No help today. Sorry, %s' % name)
 
-    elif cmd == '/exit' and from_id == ADMIN_ID:
+    elif cmd == '/exit' and from_id == telebot.admin_id:
         # telebot.send_text_with_keyboard(from_id, 'Shut down?', [["Yes", "No"]])
         telebot.send_text(from_id, 'Finish by user {0} on {1}'.format(name, telebot.host))
         EXIT_MODE = True
 
     elif check_instagram(cmd):
-        image_url = transform(cmd)
-        name = download_file(image_url)
-        telebot.send_photo(from_id, name)
+        image_url, file_name = transform(cmd)
+        if not os.path.isfile(file_name):
+            download_file(image_url, file_name)
+            log_event("{0} file is new".format(file_name))
+        telebot.send_photo(from_id, file_name)
 
     else:
         log_event('No action')
@@ -39,7 +41,7 @@ def run_command(name, from_id, cmd, author_id, date):
 
 if __name__ == "__main__":
     telebot = Telegram()
-    telebot.send_text(ADMIN_ID, "Run on {0}".format(telebot.host))
+    telebot.send_text(telebot.admin_id, "Run on {0}".format(telebot.host))
     while True:
         try:
 

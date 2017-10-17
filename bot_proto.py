@@ -5,9 +5,8 @@ import socket
 
 import xml.etree.ElementTree as ET
 
-ADMIN_ID = 74102915  # My ID
+
 URL = 'https://api.telegram.org/bot'  # HTTP Bot API URL
-CHAT_ID = 65
 INTERVAL = 0.5
 
 
@@ -16,6 +15,13 @@ def get_token():
     root = tree.getroot()
     token = root.findall('token')[0].text
     return token
+
+
+def get_admin():
+    tree = ET.parse('private_config.xml')
+    root = tree.getroot()
+    admin_id = root.findall('admin_id')[0].text
+    return admin_id
 
 
 def get_proxies():
@@ -48,7 +54,7 @@ class Telegram:
         self.URL = 'https://api.telegram.org/bot'
         if self.proxy:
             self.proxies = get_proxies()
-        self.chat_id = ADMIN_ID
+        self.admin_id = get_admin()
         self.offset = 0
         self.host = socket.getfqdn()
         self.Interval = INTERVAL
@@ -110,6 +116,10 @@ class Telegram:
         return request.json()['ok']  # Check API
 
     def send_photo(self, chat_id, imagePath):
+        try:
+            log_event('Sending photo to %s: %s' % (chat_id, imagePath))  # Logging
+        except:
+            log_event('Error with LOGGING')
         data = {'chat_id': chat_id}
         files = {'photo': (imagePath, open(imagePath, "rb"))}
         requests.post(self.URL + self.TOKEN + '/sendPhoto', data=data, files=files)
