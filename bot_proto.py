@@ -21,7 +21,7 @@ def get_admin():
     tree = ET.parse('private_config.xml')
     root = tree.getroot()
     admin_id = root.findall('admin_id')[0].text
-    return admin_id
+    return int(admin_id)
 
 
 def get_proxies():

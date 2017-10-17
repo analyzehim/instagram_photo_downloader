@@ -19,7 +19,7 @@ def check_updates():
 
 def run_command(name, from_id, cmd, author_id, date):
     global EXIT_MODE
-
+    print telebot.admin_id, from_id
     if cmd == '/help':
         telebot.send_text(from_id, 'No help today. Sorry, %s' % name)
 

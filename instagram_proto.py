@@ -1,6 +1,6 @@
 import requests
 import shutil
-
+import os
 
 def check_instagram(url):
     if "instagram" in url:
@@ -9,9 +9,13 @@ def check_instagram(url):
 
 
 def transform(url):
+    if os.name =='posix':
+        delimeter = '\\'
+    elif os.name == 'nt':
+        delimeter = '/'
     if url[-1] != '/':
         url += '/'
-    return url + 'media/?size=l', "images/" + url.split('/')[-2] + '.jpg'
+    return url + 'media/?size=l', "images{0}".format(delimeter) + url.split('/')[-2] + '.jpg'
 
 
 def download_file(url, file_name):
