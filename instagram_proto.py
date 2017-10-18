@@ -9,11 +9,10 @@ def check_instagram(url):
 
 
 def transform(url):
+    url = url.split('?')[0]
     if url[-1] != '/':
         url += '/'
-    file_name = url.split('/')[-2] + '.jpg'
-    if file_name[0] == '?':
-        file_name = url.split('/')[-3] + '.jpg'        
+    file_name = url.split('/')[-2] + '.jpg'       
     location_name = os.path.join("images", file_name)
     return url + 'media/?size=l', location_name
 
