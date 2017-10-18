@@ -12,6 +12,8 @@ def transform(url):
     if url[-1] != '/':
         url += '/'
     file_name = url.split('/')[-2] + '.jpg'
+    if file_name[0] == '?':
+        file_name = url.split('/')[-3] + '.jpg'        
     location_name = os.path.join("images", file_name)
     return url + 'media/?size=l', location_name
 
