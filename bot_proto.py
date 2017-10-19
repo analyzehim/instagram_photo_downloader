@@ -10,22 +10,19 @@ URL = 'https://api.telegram.org/bot'  # HTTP Bot API URL
 INTERVAL = 0.5
 
 
-def get_token():
-    tree = ET.parse('private_config.xml')
+def get_token(tree):
     root = tree.getroot()
     token = root.findall('token')[0].text
     return token
 
 
-def get_admin():
-    tree = ET.parse('private_config.xml')
+def get_admin(tree):
     root = tree.getroot()
     admin_id = root.findall('admin_id')[0].text
     return int(admin_id)
 
 
-def get_proxies():
-    tree = ET.parse('private_config.xml')
+def get_proxies(tree):
     root = tree.getroot()
     proxy_url = root.findall('proxy')[0].text
     proxies = {
@@ -35,26 +32,27 @@ def get_proxies():
     return proxies
 
 
-def check_mode():
+def check_mode(tree):
     import requests
 
     try:
         requests.get('https://www.ya.ru')
         return False
     except:
-        proxies = get_proxies()
+        proxies = get_proxies(tree)
         requests.get('https://www.ya.ru', proxies=proxies)
         return True
 
 
 class Telegram:
     def __init__(self):
+        self.cfgtree = ET.parse('private_config.xml')
         self.proxy = check_mode()
-        self.TOKEN = get_token()
+        self.TOKEN = get_token(self.cfgtree)
         self.URL = 'https://api.telegram.org/bot'
         if self.proxy:
-            self.proxies = get_proxies()
-        self.admin_id = get_admin()
+            self.proxies = get_proxies(self.cfgtree)
+        self.admin_id = get_admin(self.cfgtree)
         self.offset = 0
         self.host = socket.getfqdn()
         self.Interval = INTERVAL
