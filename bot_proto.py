@@ -50,23 +50,22 @@ class Telegram:
         self.proxy = check_mode()
         self.TOKEN = get_token(self.cfgtree)
         self.URL = 'https://api.telegram.org/bot'
-        if self.proxy:
-            self.proxies = get_proxies(self.cfgtree)
         self.admin_id = get_admin(self.cfgtree)
         self.offset = 0
         self.host = socket.getfqdn()
         self.Interval = INTERVAL
-        if not self.proxy:
-            log_event("Init completed, host: " + str(self.host))
         if self.proxy:
+            self.proxies = get_proxies(self.cfgtree)
             log_event("Init completed with proxy, host: " + str(self.host))
+        else:
+            log_event("Init completed, host: " + str(self.host))
 
     def get_updates(self):
         data = {'offset': self.offset + 1, 'limit': 5, 'timeout': 0}
-        if not self.proxy:
-            request = requests.post(self.URL + self.TOKEN + '/getUpdates', data=data)
         if self.proxy:
             request = requests.post(self.URL + self.TOKEN + '/getUpdates', data=data, proxies=self.proxies)
+        else:
+            request = requests.post(self.URL + self.TOKEN + '/getUpdates', data=data)
         if (not request.status_code == 200) or (not request.json()['ok']):
             return False
 
@@ -102,12 +101,11 @@ class Telegram:
             log_event('Error with LOGGING')
         json_data = {"chat_id": chat_id, "text": text,
                      "reply_markup": {"keyboard": keyboard, "one_time_keyboard": True}}
-        if not self.proxy:  # no proxy
-            request = requests.post(self.URL + self.TOKEN + '/sendMessage', json=json_data)  # HTTP request
-
         if self.proxy:
             request = requests.post(self.URL + self.TOKEN + '/sendMessage', json=json_data,
                                     proxies=self.proxies)  # HTTP request with proxy
+        else: # no proxy
+            request = requests.post(self.URL + self.TOKEN + '/sendMessage', json=json_data)  # HTTP request
 
         if not request.status_code == 200:  # Check server status
             return False
@@ -121,12 +119,12 @@ class Telegram:
         data = {'chat_id': chat_id}
         files = {'photo': (imagePath, open(imagePath, "rb"))}
         requests.post(self.URL + self.TOKEN + '/sendPhoto', data=data, files=files)
-        if not self.proxy:
-            request = requests.post(self.URL + self.TOKEN + '/sendPhoto', data=data, files=files)  # HTTP request
-
-        else:
+        if self.proxy:
             request = requests.post(self.URL + self.TOKEN + '/sendPhoto', data=data, files=files,
-                                    proxies=self.proxies)  # HTTP request with proxy)                                    
+                                    proxies=self.proxies)  # HTTP request with proxy)                            
+        else:
+            request = requests.post(self.URL + self.TOKEN + '/sendPhoto', data=data, files=files)  # HTTP request
+                    
 
         if not request.status_code == 200:  # Check server status
             return False
@@ -138,12 +136,11 @@ class Telegram:
         except:
             log_event('Error with LOGGING')
         data = {'chat_id': chat_id, 'text': text}  # Request create
-        if not self.proxy:
-            request = requests.post(self.URL + self.TOKEN + '/sendMessage', data=data)  # HTTP request
-
-        else:
+        if self.proxy:
             request = requests.post(self.URL + self.TOKEN + '/sendMessage', data=data,
                                     proxies=self.proxies)  # HTTP request with proxy
+        else:
+            request = requests.post(self.URL + self.TOKEN + '/sendMessage', data=data)  # HTTP request
 
         if not request.status_code == 200:  # Check server status
             return False
