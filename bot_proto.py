@@ -47,7 +47,7 @@ def check_mode(tree):
 class Telegram:
     def __init__(self):
         self.cfgtree = ET.parse('private_config.xml')
-        self.proxy = check_mode()
+        self.proxy = check_mode(self.cfgtree)
         self.TOKEN = get_token(self.cfgtree)
         self.URL = 'https://api.telegram.org/bot'
         self.admin_id = get_admin(self.cfgtree)
