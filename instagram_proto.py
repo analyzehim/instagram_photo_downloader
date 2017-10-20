@@ -1,11 +1,13 @@
 import requests
+import re
 import shutil
 import os
 
 def check_instagram(url):
-    if "instagram" in url:
-        return True
-    return False
+    instareg = re.compile('(https?:\/\/www\.)?instagram\.com(\/p\/[a-zA-Z0-9-_]+\/?)')
+    if instareg.search(url) == None:
+        return False
+    return True
 
 
 def transform(url):
