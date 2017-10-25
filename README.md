@@ -7,7 +7,7 @@
 
 ## How To Using
 There is a bot: [@anax_bot](https://web.telegram.org/#/im?p=@anax_bot).
-You can send hime a link to Instagram photo, and get photo backward.
+You can send him a link to Instagram photo, and get photo backward.
 
 
 
@@ -25,7 +25,7 @@ $ git clone https://github.com/analyzehim/instagram_photo_downloader/
 # Go into the repository
 $ cd instagram_photo_saver
 
-# Change the config file (fo
+# Change the config file (you need fill you Telegram_token and Telegram_id, and proxy settings, if you need)
 
 # Run the app
 $ python main_insta.py

@@ -36,11 +36,11 @@ def check_mode(tree):
     import requests
 
     try:
-        requests.get('https://www.ya.ru')
+        requests.get('https://www.google.com')
         return False
     except:
         proxies = get_proxies(tree)
-        requests.get('https://www.ya.ru', proxies=proxies)
+        requests.get('https://www.google.com', proxies=proxies)
         return True
 
 

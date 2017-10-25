@@ -28,7 +28,6 @@ def run_command(name, from_id, cmd, author_id, date):
         telebot.send_text(from_id, 'Hello %s! Just send me a link to Instagram post' % name)
         
     elif cmd == '/exit' and from_id == telebot.admin_id:
-        # telebot.send_text_with_keyboard(from_id, 'Shut down?', [["Yes", "No"]])
         telebot.send_text(from_id, 'Finish by user {0} on {1}'.format(name, telebot.host))
         EXIT_MODE = True
 
