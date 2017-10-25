@@ -1,0 +1,5 @@
+<config>
+    <proxy>[scheme]://[login]:[password]@[proxy_url]</proxy>
+    <token>[TELEGRAM_TOKEN}</token>
+    <admin_id>[TELEGRAM_ID}</admin_id>
+</config>
