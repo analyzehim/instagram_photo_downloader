@@ -27,7 +27,6 @@ $ cd instagram_photo_saver
 
 # Change the config file (fo
 
-
 # Run the app
 $ python main_insta.py
 ```
