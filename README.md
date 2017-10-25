@@ -1,6 +1,6 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 [![Python](https://img.shields.io/badge/python-2.7-brightgreen.svg)](https://www.python.org/download/releases/2.7)
-[![Dependencies](https://img.shields.io/badge/dependencies-up%20to%20date-brightgreen.svg)](http://docs.python-requests.org/en/master)
+[![Dependencies](https://img.shields.io/badge/dependencies-python--requests-brightgreen.svg)](http://docs.python-requests.org/en/master)
 [![GitHub Issues](https://img.shields.io/github/issues/anfederico/Clairvoyant.svg)](https://github.com/anfederico/Clairvoyant/issues)
 ![Contributions welcome](https://img.shields.io/badge/contributions-welcome-orange.svg)
 
