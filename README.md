@@ -6,7 +6,7 @@
 
 
 ## How To Using
-There is a bot: [@anax_bot] (https://web.telegram.org/#/im?p=@anax_bot).
+There is a bot: [@anax_bot](https://web.telegram.org/#/im?p=@anax_bot).
 You can send hime a link to Instagram photo, and get photo backward.
 
 
