@@ -3,6 +3,7 @@ import sys
 import os
 from bot_proto import *
 from instagram_proto import *
+from log_proto import *
 
 EXIT_MODE = False
 
@@ -37,6 +38,7 @@ def run_command(name, from_id, cmd, author_id, date):
             download_file(image_url, file_name)
             log_event("{0} file is new".format(file_name))
         telebot.send_photo(from_id, file_name)
+        log.add_message(name, from_id, date, file_name)
 
     else:
         log_event('No action')
@@ -44,6 +46,7 @@ def run_command(name, from_id, cmd, author_id, date):
 
 if __name__ == "__main__":
     telebot = Telegram()
+    log = logDB()
     telebot.send_text(telebot.admin_id, "Run on {0}".format(telebot.host))
     while True:
         try:
