@@ -38,7 +38,7 @@ def run_command(name, from_id, cmd, author_id, date):
             download_file(image_url, file_name)
             log_event("{0} file is new".format(file_name))
         telebot.send_photo(from_id, file_name)
-        log.add_message(name, from_id, date, file_name)
+        log.add_message('Default', from_id, date, file_name)
 
     else:
         log_event('No action')
