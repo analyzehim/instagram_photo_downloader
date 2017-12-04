@@ -2,7 +2,8 @@
 import requests
 import time
 import socket
-
+import sys
+import traceback
 import xml.etree.ElementTree as ET
 
 
@@ -80,25 +81,19 @@ class Telegram:
 
             from_id = update['message']['chat']['id']  # Chat ID
             author_id = update['message']['from']['id']  # Creator ID
-            message = update['message']['text']
+            message = update['message']['text'].encode("utf-8")
             date = update['message']['date']
             try:
-                name = update['message']['chat']['first_name']
+                name = update['message']['chat']['first_name'].encode("utf-8")
             except:
-                name = update['message']['from']['first_name']
+                name = update['message']['from']['first_name'].encode("utf-8")
             parameters = (name, from_id, message, author_id, date)
             updates_list.append(parameters)
-            try:
-                log_event('from %s (id%s): "%s" with author: %s; time:%s' % parameters)
-            except:
-                pass
+            log_event('from %s (id%s): "%s" with author: %s; time:%s' % parameters)
         return updates_list
 
     def send_text_with_keyboard(self, chat_id, text, keyboard):
-        try:
-            log_event('Sending to %s: %s; keyboard: %s' % (chat_id, text, keyboard))  # Logging
-        except:
-            log_event('Error with LOGGING')
+        log_event('Sending to %s: %s; keyboard: %s' % (chat_id, text, keyboard))  # Logging
         json_data = {"chat_id": chat_id, "text": text,
                      "reply_markup": {"keyboard": keyboard, "one_time_keyboard": True}}
         if self.proxy:
@@ -106,16 +101,12 @@ class Telegram:
                                     proxies=self.proxies)  # HTTP request with proxy
         else: # no proxy
             request = requests.post(self.URL + self.TOKEN + '/sendMessage', json=json_data)  # HTTP request
-
         if not request.status_code == 200:  # Check server status
             return False
         return request.json()['ok']  # Check API
 
     def send_photo(self, chat_id, imagePath):
-        try:
-            log_event('Sending photo to %s: %s' % (chat_id, imagePath))  # Logging
-        except:
-            log_event('Error with LOGGING')
+        log_event('Sending photo to %s: %s' % (chat_id, imagePath))  # Logging
         data = {'chat_id': chat_id}
         files = {'photo': (imagePath, open(imagePath, "rb"))}
         requests.post(self.URL + self.TOKEN + '/sendPhoto', data=data, files=files)
@@ -124,17 +115,12 @@ class Telegram:
                                     proxies=self.proxies)  # HTTP request with proxy)                            
         else:
             request = requests.post(self.URL + self.TOKEN + '/sendPhoto', data=data, files=files)  # HTTP request
-                    
-
         if not request.status_code == 200:  # Check server status
             return False
         return request.json()['ok']  # Check API
 
     def send_text(self, chat_id, text):
-        try:
-            log_event('Sending to %s: %s' % (chat_id, text))  # Logging
-        except:
-            log_event('Error with LOGGING')
+        log_event('Sending to %s: %s' % (chat_id, text))  # Logging
         data = {'chat_id': chat_id, 'text': text}  # Request create
         if self.proxy:
             request = requests.post(self.URL + self.TOKEN + '/sendMessage', data=data,
@@ -154,3 +140,8 @@ def log_event(text):
     f.write(event + '\n')
     f.close()
     return
+
+def get_exception():
+    exc_type, exc_value, exc_traceback = sys.exc_info()
+    lines = traceback.format_exception(exc_type, exc_value, exc_traceback)
+    return ''.join('!! ' + line for line in lines)
