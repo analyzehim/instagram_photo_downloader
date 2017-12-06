@@ -34,10 +34,19 @@ class logDB:
         self.con.commit()
         return
 
-    def get_status(self, hours_counr):
+    def get_status(self, hours_count):
         time_right = time.time()
-        time_left = time_right - hours_counr*60*60
+        time_left = time_right - hours_count*60*60
+
+        self.cur.execute('SELECT COUNT(DISTINCT user_id) FROM Messages Where date >={0} AND date<={1}'.format(time_left, time_right))
+        count_users = int(self.cur.fetchone()[0])
+
+        self.cur.execute('SELECT * FROM Messages Where date >={0} AND date<={1}'.format(time_left, time_right))
+        count_requests = len(self.cur.fetchall())
+
         self.cur.execute('SELECT * FROM Messages Where date >={0} AND date<={1} AND first =1'.format(time_left, time_right))
         count_newcomer = len(self.cur.fetchall())
-        return count_newcomer
+
+        status = '''In the last 24 hours: \n   {0} unique users; \n   {1} users; \n   {2} requests.\n________________________'''.format(count_newcomer, count_users, count_requests)
+        return status
 
