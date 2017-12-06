@@ -5,17 +5,25 @@ import sys
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
+    if len(sys.argv) < 2:
         print "Need flag; -s status, -w for work"
         sys.exit()
+    elif len(sys.argv) == 2:
+        flag = sys.argv[1]
+        hours_count = 24
 
+    elif len(sys.argv) == 3:
+        flag = sys.argv[1]
+        hours_count = int(sys.argv[2])
+    else:
+        print "Too many args"
+        sys.exit()
 
-    flag = sys.argv[1]
 
     log = logDB()
 
     if flag == "-s":
-        status = log.get_status(24)
+        status = log.get_status(hours_count)
         print status
         sys.exit()
 
@@ -24,7 +32,7 @@ if __name__ == "__main__":
         while True:
             try:
                 if datetime.datetime.now().hour == 12:
-                    telebot.send_text(telebot.admin_id, log.get_status(24))
+                    telebot.send_text(telebot.admin_id, log.get_status(hours_count))
                     time.sleep(60 * 60)
 
             except KeyboardInterrupt:

@@ -38,6 +38,12 @@ class logDB:
         time_right = time.time()
         time_left = time_right - hours_count*60*60
 
+        self.cur.execute('SELECT COUNT(DISTINCT(id)) FROM Messages')
+        count_requests_all = int(self.cur.fetchone()[0])
+
+        self.cur.execute('SELECT COUNT(DISTINCT(user_id)) FROM Messages')
+        count_users_all = int(self.cur.fetchone()[0])
+
         self.cur.execute('SELECT COUNT(DISTINCT user_id) FROM Messages Where date >={0} AND date<={1}'.format(time_left, time_right))
         count_users = int(self.cur.fetchone()[0])
 
@@ -47,6 +53,8 @@ class logDB:
         self.cur.execute('SELECT * FROM Messages Where date >={0} AND date<={1} AND first =1'.format(time_left, time_right))
         count_newcomer = len(self.cur.fetchall())
 
-        status = '''In the last 24 hours: \n   {0} unique users; \n   {1} users; \n   {2} requests.\n________________________'''.format(count_newcomer, count_users, count_requests)
+        status_24 = '''In the last {0} hours: \n   {1} unique users; \n   {2} users; \n   {3} requests.\n________________________'''.format(hours_count, count_newcomer, count_users, count_requests)
+        status_all ='''At All: \n   {0} users; \n   {1} requests.\n________________________'''.format(count_users_all, count_requests_all)
+        status = status_24 + '\n\n' + status_all
         return status
 
