@@ -3,6 +3,7 @@ import re
 import shutil
 import os
 
+
 def check_instagram(url):
     instareg = re.compile('(https?:\/\/www\.)?instagram\.com(\/p\/[a-zA-Z0-9-_]+\/?)')
     if instareg.search(url) == None:
@@ -16,6 +17,8 @@ def transform(url):
         url += '/'
     file_name = url.split('/')[-2] + '.jpg'       
     location_name = os.path.join("images", file_name)
+    if os.name == 'nt': #real dirty hack to beatiful windows way writing path names
+        location_name = "images//" + file_name
     return url + 'media/?size=l', location_name
 
 

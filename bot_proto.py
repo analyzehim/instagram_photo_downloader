@@ -5,7 +5,7 @@ import socket
 import sys
 import traceback
 import xml.etree.ElementTree as ET
-
+import os
 
 URL = 'https://api.telegram.org/bot'  # HTTP Bot API URL
 INTERVAL = 0.5
@@ -47,6 +47,8 @@ def check_mode(tree):
 
 class Telegram:
     def __init__(self):
+        if not os.path.exists("images"):
+            os.makedirs("images")
         self.cfgtree = ET.parse('private_config.xml')
         self.proxy = check_mode(self.cfgtree)
         self.TOKEN = get_token(self.cfgtree)
@@ -117,6 +119,7 @@ class Telegram:
             request = requests.post(self.URL + self.TOKEN + '/sendPhoto', data=data, files=files)  # HTTP request
         if not request.status_code == 200:  # Check server status
             return False
+
         return request.json()['ok']  # Check API
 
     def send_text(self, chat_id, text):
@@ -140,6 +143,7 @@ def log_event(text):
     f.write(event + '\n')
     f.close()
     return
+
 
 def get_exception():
     exc_type, exc_value, exc_traceback = sys.exc_info()
