@@ -38,6 +38,7 @@ def run_command(name, from_id, cmd, author_id, date):
         log.add_message(name, from_id, date, file_name)
 
     else:
+        telebot.send_text(from_id, 'Send the correct link to Instagram post, like https://www.instagram.com/p/BeOJzBCDyuD/?taken-by=instagram')
         log_event('No action')
 
 
