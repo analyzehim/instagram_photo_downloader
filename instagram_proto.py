@@ -2,7 +2,9 @@ import requests
 import re
 import shutil
 import os
-
+import urllib2
+from multiprocessing.dummy import Pool as ThreadPool
+import time
 
 def check_instagram(url):
     instareg = re.compile('(https?:\/\/www\.)?instagram\.com(\/p\/[a-zA-Z0-9-_]+\/?)')

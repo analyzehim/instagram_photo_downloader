@@ -57,4 +57,3 @@ class logDB:
         status_all ='''At All: \n   {0} users; \n   {1} requests.\n________________________'''.format(count_users_all, count_requests_all)
         status = status_24 + '\n\n' + status_all
         return status
-
