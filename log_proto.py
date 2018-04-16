@@ -57,3 +57,11 @@ class logDB:
         status_all ='''At All: \n   {0} users; \n   {1} requests.\n________________________'''.format(count_users_all, count_requests_all)
         status = status_24 + '\n\n' + status_all
         return status
+
+    def get_user_list(self):
+        self.cur.execute('SELECT DISTINCT(user_id) FROM Messages')
+        user_list = self.cur.fetchall()
+        return [int(user[0]) for user in user_list]
+
+log = logDB()
+print log.get_user_list()
