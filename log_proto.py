@@ -58,3 +58,7 @@ class logDB:
         status = status_24 + '\n\n' + status_all
         return status
 
+    def get_user_list(self):
+        self.cur.execute('SELECT DISTINCT(user_id) FROM Messages')
+        user_list = self.cur.fetchall()
+        return [int(user[0]) for user in user_list]
